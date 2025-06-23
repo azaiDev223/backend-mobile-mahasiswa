@@ -25,14 +25,19 @@ class AuthDosenController extends Controller
         $token = $dosen->createToken('dosen-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Login berhasil',
-            'token' => $token,
-            'dosen' => [
-                'id' => $dosen->id,
-                'nama' => $dosen->nama,
-                'email' => $dosen->email,
-            ]
-        ]);
+    'message' => 'Login berhasil',
+    'token' => $token,
+    'dosen' => [
+        'id' => $dosen->id,
+        'nama' => $dosen->nama,
+        'email' => $dosen->email,
+        'nip' => $dosen->nip,
+        'foto' => $dosen->foto,
+        'foto_url' => $dosen->foto ? asset('storage/foto-dosen/' . $dosen->foto) : null,
+    ]
+]);
+
+
     }
 
     public function logout(Request $request)
