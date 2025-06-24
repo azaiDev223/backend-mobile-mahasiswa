@@ -10,11 +10,22 @@ use Illuminate\Support\Facades\Validator;
 
 class BimbinganController extends Controller
 {
-    public function index()
-    {
-        $bimbingan = Bimbingan::with(['mahasiswa', 'dosen'])->get();
-        return BimbinganResource::collection($bimbingan);
+    public function bimbinganDosen(Request $request)
+{
+    $user = $request->user();
+
+    // validasi user adalah dosen
+    if (!$user || !$user instanceof \App\Models\Dosen) {
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    $bimbingan = Bimbingan::with(['mahasiswa', 'dosen'])
+        ->where('dosen_id', $user->id)
+        ->get();
+
+    return BimbinganResource::collection($bimbingan);
+}
+
 
     public function store(Request $request)
     {

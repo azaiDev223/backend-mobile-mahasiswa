@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class DosenController extends Controller
 {
+
+
     public function index()
     {
         return DosenResource::collection(Dosen::with('programStudi')->get());
@@ -89,6 +91,55 @@ class DosenController extends Controller
     $dosen = Dosen::with('programStudi')->findOrFail($request->user()->id);
     return new DosenResource($dosen);
 }
+
+
+public function updateMe(Request $request)
+{
+    $dosen = $request->user(); // dosen yang sedang login
+
+    $validated = $request->validate([
+        'nama' => 'nullable|string|max:255',
+        'email' => 'nullable|email|unique:dosens,email,' . $dosen->id,
+        'nip' => 'nullable|string|max:100',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'jenis_kelamin' => 'nullable|in:Laki-laki,Perempuan',
+        'tanggal_lahir' => 'nullable|date',
+        'no_hp' => 'nullable|string|max:20',
+        // ❌ Tidak bisa edit program_studi_id
+    ]);
+
+    if ($request->hasFile('foto')) {
+    if ($dosen->foto && Storage::disk('public')->exists('foto-dosen/' . $dosen->foto)) {
+        Storage::disk('public')->delete('foto-dosen/' . $dosen->foto);
+    }
+
+    $path = $request->file('foto')->store('foto-dosen', 'public');
+    $validated['foto'] = basename($path); // GABUNGKAN KE VALIDATED
 }
+
+$dosen->update($validated);
+
+    
+
+    return response()->json([
+        'message' => 'Profil dosen berhasil diperbarui',
+        'dosen' => [
+            'id' => $dosen->id,
+            'nama' => $dosen->nama,
+            'email' => $dosen->email,
+            'nip' => $dosen->nip,
+            'foto' => $dosen->foto,
+            'foto_url' => $dosen->foto ? asset('storage/foto-dosen/' . $dosen->foto) : null,
+            'program_studi' => $dosen->programStudi->nama_prodi ?? null, // TIDAK DIEDIT
+            'jenis_kelamin' => $dosen->jenis_kelamin,
+            'tanggal_lahir' => $dosen->tanggal_lahir,
+            'no_hp' => $dosen->no_hp,
+        ]
+    ]);
+}
+
+}
+
+
 
 

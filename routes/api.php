@@ -85,6 +85,10 @@ Route::put('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'upda
 Route::patch('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'update']);
 Route::delete('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'destroy']);
 
+
+
+
+
 // routes/api.php
 
 Route::get('mahasiswa', [App\Http\Controllers\Api\MahasiswaController::class, 'index']);
@@ -125,6 +129,13 @@ Route::post('bimbingan', [BimbinganController::class, 'store']);
 Route::get('bimbingan/{id}', [BimbinganController::class, 'show']);
 Route::put('bimbingan/{id}', [BimbinganController::class, 'update']);
 Route::delete('bimbingan/{id}', [BimbinganController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')->get('/bimbingan-admin', [BimbinganController::class, 'bimbinganAdmin']);
+Route::middleware('auth:sanctum')->get('/bimbingan-dosen', [BimbinganController::class, 'bimbinganDosen']);
+
+Route::middleware('auth:sanctum')->post('/dosen/me', [DosenController::class, 'updateMe']);
+
+
 
 
 
