@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Mahasiswa extends Authenticatable
 {
@@ -29,6 +30,14 @@ class Mahasiswa extends Authenticatable
     ];
 
     protected $hidden = ['password'];
+
+    // --- TAMBAHKAN DI SINI ---
+    /**
+     * The accessors to append to the model's array form.
+     * Atribut ini akan selalu ditambahkan saat model diubah menjadi JSON.
+     * @var array
+     */
+    protected $appends = ['foto_url'];
 
     // ✅ Hash otomatis hanya di model
     protected static function booted()
@@ -56,7 +65,15 @@ class Mahasiswa extends Authenticatable
 
     public function krs()
     {
+        // HAPUS BARIS YANG SALAH DARI SINI
         return $this->hasMany(Krs::class, 'mahasiswa_id');
+    }
+
+    protected function fotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->foto ? asset('storage/' . $this->foto) : null,
+        );
     }
 }
 
