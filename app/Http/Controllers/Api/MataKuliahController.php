@@ -20,6 +20,7 @@ class MataKuliahController extends Controller
             'kode_matkul' => 'required|string|max:50',
             'nama_matkul' => 'required|string|max:255',
             'sks' => 'required|integer|min:1|max:6',
+            'semester' => 'required|integer|min:1|max:8',
             'program_studi_id' => 'required|exists:program_studis,id',
         ]);
 
@@ -36,6 +37,7 @@ class MataKuliahController extends Controller
             'kode_matkul' => 'sometimes|required|string|max:50',
             'nama_matkul' => 'sometimes|required|string|max:255',
             'sks' => 'sometimes|required|integer|min:1|max:6',
+            'semester' => 'sometimes|required|integer|min:1|max:8',
             'program_studi_id' => 'sometimes|required|exists:program_studis,id',
         ]);
 

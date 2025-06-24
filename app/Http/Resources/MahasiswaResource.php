@@ -27,6 +27,7 @@ class MahasiswaResource extends JsonResource
             'tanggal_lahir' => $this->tanggal_lahir,
             'angkatan' => $this->angkatan,
             'program_studi_id' => $this->program_studi_id,
+            
             'dosen_id' => $this->dosen_id,
 
             // 'program_studi' => [

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Mahasiswa\KhsController;
+use App\Http\Controllers\Api\ProfileMahasiswaController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -29,13 +30,17 @@ Route::get('/dosen/me', [DosenController::class, 'me']);
 // Login Mahasiswa (Sanctum)
 
 
+
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', function (Request $request) {
-        return $request->user();
+        return $request->user()->load(['programStudi', 'dosen']);
     });
-
+    Route::post('/password/change', [ProfileMahasiswaController::class, 'changePassword']);
+    Route::post('/profile/update', [ProfileMahasiswaController::class, 'updateProfile']);
+    
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

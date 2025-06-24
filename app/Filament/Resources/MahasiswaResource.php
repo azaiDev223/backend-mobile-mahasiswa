@@ -52,8 +52,8 @@ class MahasiswaResource extends Resource
                 ->label('Password')
                 ->password()
                 ->required()
-                ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                ->dehydrated(fn ($state) => filled($state))
+                // ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                // ->dehydrated(fn ($state) => filled($state))
                 ->hiddenOn('edit'), // agar tidak muncul saat edit
 
             Forms\Components\TextInput::make('no_hp')
@@ -83,7 +83,25 @@ class MahasiswaResource extends Resource
                 ->relationship('dosen', 'nama')
                 ->searchable()
                 ->nullable(),
+
+            // upload foto
+            Forms\Components\FileUpload::make('foto')
+                ->label('Foto')
+                ->image()
+                ->disk('public')
+                ->directory('foto-mahasiswas') // 'foto-mahasiswa' lebih baik daripada 'foto mahasiswa'
+                ->visibility('public')
+                ->preserveFilenames()
+                ->nullable()
+                ->maxSize(1024)
+                ->acceptedFileTypes(['image/*']),
+                
             ]);
+
+            // upload foto
+
+            
+             
     }
 
     public static function table(Table $table): Table

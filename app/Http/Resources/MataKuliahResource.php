@@ -19,6 +19,7 @@ class MataKuliahResource extends JsonResource
         'kode_matkul' => $this->kode_matkul,
         'nama_matkul' => $this->nama_matkul,
         'sks' => $this->sks,
+        'semester' => $this->semester, // <-- TAMBAHKAN BARIS INI
         'program_studi_id' => $this->program_studi_id,
     ];
 }
