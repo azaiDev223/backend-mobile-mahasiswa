@@ -40,6 +40,11 @@ class MataKuliahResource extends Resource
                 ->numeric()
                 ->label('Jumlah SKS'),
 
+            TextInput::make('semester')
+                ->required()
+                ->numeric()
+                ->label('Semester'),
+
             Select::make('program_studi_id')
                 ->relationship('programStudi', 'nama_prodi')
                 ->searchable()
