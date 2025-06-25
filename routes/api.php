@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Mahasiswa\KhsController;
 use App\Http\Controllers\Api\ProfileMahasiswaController;
+use App\Http\Controllers\Api\KrsController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -40,7 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::post('/password/change', [ProfileMahasiswaController::class, 'changePassword']);
     Route::post('/profile/update', [ProfileMahasiswaController::class, 'updateProfile']);
-    
+    // --- RUTE BARU UNTUK FITUR KRS ---
+    Route::get('/krs/penawaran', [KrsController::class, 'getPenawaranMatakuliah']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 

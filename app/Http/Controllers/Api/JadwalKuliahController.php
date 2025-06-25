@@ -24,6 +24,8 @@ class JadwalKuliahController extends Controller
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
             'ruangan' => 'required|string|max:100',
+            'tahun_akademik' => 'required|string|max:10', // DITAMBAHKAN
+            'kuota' => 'required|integer|min:1', // DITAMBA
         ]);
 
         if ($validator->fails()) {
@@ -54,6 +56,8 @@ class JadwalKuliahController extends Controller
     'jam_mulai' => 'sometimes|required|date_format:H:i',
     'jam_selesai' => 'sometimes|required|date_format:H:i|after:jam_mulai',
     'ruangan' => 'sometimes|required|string|max:100',
+    'tahun_akademik' => 'sometimes|required|string|max:10', // DITAMBAHKAN
+    'kuota' => 'sometimes|required|integer|min:1', // DITAMBAHKAN
 ]);
 
 

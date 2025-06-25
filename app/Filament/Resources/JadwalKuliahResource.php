@@ -25,7 +25,7 @@ class JadwalKuliahResource extends Resource
             ->schema([
                 Forms\Components\Select::make('kelas_id')
                     ->label('Kelas')
-                    ->relationship('kelas', 'ruangan')
+                    ->relationship('kelas', 'nama_kelas')
                     ->searchable()
                     ->required(),
 
@@ -52,6 +52,24 @@ class JadwalKuliahResource extends Resource
                     ->label('Ruangan')
                     ->required()
                     ->maxLength(100),
+                Forms\Components\Select::make('tahun_akademik')
+                    ->label('Tahun Akademik')
+                    ->options([
+                        '2024/2025 Ganjil' => '2024/2025 Ganjil',
+                        '2024/2025 Genap'  => '2024/2025 Genap',
+                        '2025/2026 Ganjil' => '2025/2026 Ganjil',
+                        '2025/2026 Genap'  => '2025/2026 Genap',
+                        // Tambahkan tahun akademik lainnya di sini
+                    ])
+                    ->required()
+                    ->searchable(), // Agar bisa dicari
+                Forms\Components\TextInput::make('kuota')
+                    ->label('Kuota')
+                    ->numeric()
+                    ->required()
+                    ->minValue(1)
+                    ->maxValue(1000)
+                    ->default(30),
             ]);
     }
 
@@ -59,10 +77,11 @@ class JadwalKuliahResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kelas.ruangan')->label('Kelas'),
+                Tables\Columns\TextColumn::make('kelas.nama_kelas')->label('Kelas'),
                 Tables\Columns\TextColumn::make('hari'),
                 Tables\Columns\TextColumn::make('jam_mulai')->label('Mulai'),
                 Tables\Columns\TextColumn::make('jam_selesai')->label('Selesai'),
+                Tables\Columns\TextColumn::make('tahun_akademik')->label('Tahun Akademik'),
                 Tables\Columns\TextColumn::make('ruangan'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Dibuat'),
             ])
