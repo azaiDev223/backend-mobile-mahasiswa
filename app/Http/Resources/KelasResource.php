@@ -17,17 +17,16 @@ class KelasResource extends JsonResource
         return [
             'id' => $this->id,
             'nama_kelas' => $this->nama_kelas,
-            'dosen' => [
-                'id' => $this->dosen_id,
-                'nama' => $this->dosen->nama ?? null,
-            ],
-            'mata_kuliah' => [
-                'id' => $this->matakuliah_id,
-                'nama' => $this->matakuliah->nama_matkul ?? null,
-                'sks' => $this->matakuliah->sks ?? null,
-            ],
+            
+            // --- BAGIAN YANG DIPERBAIKI ---
+            // Gunakan Resource lain untuk menangani data relasi.
+            // 'whenLoaded' memastikan data hanya disertakan jika sudah di-load
+            // oleh controller untuk efisiensi.
+            'dosen' => new DosenResource($this->whenLoaded('dosen')),
+            'mata_kuliah' => new MataKuliahResource($this->whenLoaded('mataKuliah')),
+            
             'created_at' => $this->created_at->toDateTimeString(),
-            'updated_at' => $this->created_at->toDateTimeString(),
+            'updated_at' => $this->updated_at->toDateTimeString(),
         ];
     }
 }
