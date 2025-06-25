@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class JadwalKuliahResource extends Resource
 {
@@ -25,8 +26,22 @@ class JadwalKuliahResource extends Resource
             ->schema([
                 Forms\Components\Select::make('kelas_id')
                     ->label('Kelas')
-                    ->relationship('kelas', 'nama_kelas')
+                    // Parameter kedua ('nama_kelas') sekarang diabaikan karena kita akan membuat label kustom.
+                    // Parameter ketiga adalah closure untuk memodifikasi query, kita gunakan untuk eager loading.
+                    ->relationship(
+                        name: 'kelas',
+                        titleAttribute: 'nama_kelas', // Tetap dibutuhkan sebagai fallback/judul
+                        modifyQueryUsing: fn(Builder $query) => $query->with(['mataKuliah']) // Eager load relasi mataKuliah
+                    )
+                    // getOptionLabelFromRecordUsing akan membuat label untuk setiap pilihan
+                    ->getOptionLabelFromRecordUsing(function ($record) {
+                        // Gabungkan nama kelas, nama mata kuliah, dan semester
+                        $namaMatkul = $record->mataKuliah->nama_matkul ?? 'Tanpa Matkul';
+                        $semester = $record->mataKuliah->semester ?? '?';
+                        return "{$record->nama_kelas} - {$namaMatkul} (Semester {$semester})";
+                    })
                     ->searchable()
+                    ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('hari')

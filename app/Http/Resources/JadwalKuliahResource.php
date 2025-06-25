@@ -34,7 +34,7 @@ class JadwalKuliahResource extends JsonResource
                 // Menyertakan data mata kuliah dari relasi kelas
                 'mata_kuliah' => [
                     'id' => $this->kelas->mataKuliah->id,
-                    'kode' => $this->kelas->mataKuliah->kode_matkul, // Kirim sebagai 'kode' agar cocok dengan Flutter
+                    'kode_matkul' => $this->kelas->mataKuliah->kode_matkul, // Kirim sebagai 'kode' agar cocok dengan Flutter
                     'nama_matkul' => $this->kelas->mataKuliah->nama_matkul,
                     'sks' => $this->kelas->mataKuliah->sks,
                     'semester' => $this->kelas->mataKuliah->semester,
