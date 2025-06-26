@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class JadwalKuliahController extends Controller
 {
+
+    
     public function index()
     {
         $jadwals = JadwalKuliah::with('kelas')->get();
