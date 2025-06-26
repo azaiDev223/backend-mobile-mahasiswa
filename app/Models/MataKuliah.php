@@ -30,4 +30,8 @@ class MataKuliah extends Model
                     ->withPivot('nilai', 'grade')
                     ->withTimestamps();
     }
+    public function khsDetails()
+    {
+        return $this->hasMany(KhsDetail::class, 'mata_kuliah_id');
+    }
 }

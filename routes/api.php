@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KhsController;
 use App\Http\Controllers\Api\ProfileMahasiswaController;
+// use App\Http\Controllers\Api\Mahasiswa\BimbinganController;
 use App\Http\Controllers\Api\KrsController;
+use App\Http\Controllers\Api\TranskripController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -48,6 +50,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // --- RUTE BARU UNTUK JADWAL KULIAH ---
     Route::get('/jadwal-kuliah', [KrsController::class, 'getJadwalKuliah']);
     Route::get('/khs', [KhsController::class, 'index']);
+    // --- RUTE BARU UNTUK FITUR TRANSKRIP ---
+    Route::get('/transkrip', [TranskripController::class, 'getTranskrip']);
+    // Route spesifik untuk Bimbingan dari sisi Mahasiswa
+    Route::get('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'index']);
+    Route::post('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'store']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

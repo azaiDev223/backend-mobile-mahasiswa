@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('tanggal_bimbingan');
             $table->string('topik', 255);
             $table->text('catatan')->nullable();
-            $table->enum('status', ['Terjadwal', 'Selesai', 'Dibatalkan'])->default('Terjadwal');
+            $table->enum('status', ['Diajukan','Terjadwal', 'Selesai', 'Dibatalkan'])->default('Terjadwal');
             $table->timestamps();
         });
     }
