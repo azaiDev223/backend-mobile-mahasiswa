@@ -88,14 +88,42 @@ class DosenController extends Controller
 
     public function me(Request $request)
 {
-    $dosen = Dosen::with('programStudi')->findOrFail($request->user()->id);
-    return new DosenResource($dosen);
+    $dosen = $request->user();
+
+    if (!$dosen) {
+        return response()->json([
+            'message' => 'Dosen tidak ditemukan.',
+        ], 404);
+    }
+
+    return response()->json([
+        'data' => [
+            'id' => $dosen->id,
+            'nama' => $dosen->nama,
+            'email' => $dosen->email,
+            'nip' => $dosen->nip,
+            'foto' => $dosen->foto,
+            'foto_url' => $dosen->foto ? asset('storage/foto-dosen/' . $dosen->foto) : null,
+            'jenis_kelamin' => $dosen->jenis_kelamin,
+            'tanggal_lahir' => $dosen->tanggal_lahir,
+            'no_hp' => $dosen->no_hp,
+            'program_studi_id' => $dosen->program_studi_id,
+            'program_studi' => $dosen->programStudi->nama_prodi ?? null,
+        ]
+    ]);
 }
 
 
 public function updateMe(Request $request)
 {
-    $dosen = $request->user(); // dosen yang sedang login
+    $dosen = $request->user();
+
+    if (!$dosen) {
+        return response()->json([
+            'message' => 'User tidak ditemukan dari token.',
+        ], 401);
+    }
+     // dosen yang sedang login
 
     $validated = $request->validate([
         'nama' => 'nullable|string|max:255',

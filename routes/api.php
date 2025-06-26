@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Mahasiswa\KhsController;
+use App\Http\Controllers\Api\KhsController;
 use App\Http\Controllers\Api\ProfileMahasiswaController;
 use App\Http\Controllers\Api\KrsController;
 
@@ -16,10 +16,24 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // login dosen
 use App\Http\Controllers\Api\AuthDosenController;
 use App\Http\Controllers\Api\DosenController;
+use App\Http\Controllers\Api\ProfileDosenController;
 
 Route::post('/login-dosen', [AuthDosenController::class, 'login']);
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::post('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
+    Route::put('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
+
+
+    // update password
+    Route::post('/dosen/update-password', [ProfileDosenController::class, 'updatePassword']);
+
+
+
+
 
 Route::get('/dosen/me', [DosenController::class, 'me']);
 
@@ -43,6 +57,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/profile/update', [ProfileMahasiswaController::class, 'updateProfile']);
     // --- RUTE BARU UNTUK FITUR KRS ---
     Route::get('/krs/penawaran', [KrsController::class, 'getPenawaranMatakuliah']);
+    Route::post('/krs/simpan', [KrsController::class, 'simpanKrs']); // <-- RUTE BARU
+    Route::get('/krs/riwayat', [KrsController::class, 'getSubmittedKrs']); // <-- RUTE BARU
+    // --- RUTE BARU UNTUK JADWAL KULIAH ---
+    Route::get('/jadwal-kuliah', [KrsController::class, 'getJadwalKuliah']);
+    Route::get('/khs', [KhsController::class, 'index']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -96,6 +116,9 @@ Route::delete('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'd
 
 
 
+
+
+
 // routes/api.php
 
 Route::get('mahasiswa', [App\Http\Controllers\Api\MahasiswaController::class, 'index']);
@@ -143,7 +166,7 @@ Route::delete('bimbingan/{id}', [BimbinganController::class, 'destroy']);
 Route::middleware('auth:sanctum')->get('/bimbingan-admin', [BimbinganController::class, 'bimbinganAdmin']);
 Route::middleware('auth:sanctum')->get('/bimbingan-dosen', [BimbinganController::class, 'bimbinganDosen']);
 
-Route::middleware('auth:sanctum')->post('/dosen/me', [DosenController::class, 'updateMe']);
+
 
 
 

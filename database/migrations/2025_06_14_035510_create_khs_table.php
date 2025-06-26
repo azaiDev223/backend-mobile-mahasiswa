@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('mahasiswa_id')->constrained('mahasiswas')->onDelete('cascade');
             $table->integer('semester');
-            $table->string('tahun_akademik', 9);
+            $table->string('tahun_akademik', 20);
             $table->decimal('ip', 5, 2)->nullable();   // Total nilai mentah
             $table->decimal('ips', 5, 2)->nullable();  // IP semester
             $table->decimal('ipk', 5, 2)->nullable();  // IPK kumulatif

@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Krs extends Model
 {
     use HasFactory;
 
     protected $table = 'krs';
-    protected $primaryKey = 'id_krs';
+    // protected $primaryKey = 'id_krs';
 
     protected $fillable = [
         'id_mahasiswa',
@@ -24,7 +25,7 @@ class Krs extends Model
         return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa');
     }
 
-    public function details()
+    public function detail(): HasMany
     {
         return $this->hasMany(KrsDetail::class, 'krs_id');
     }

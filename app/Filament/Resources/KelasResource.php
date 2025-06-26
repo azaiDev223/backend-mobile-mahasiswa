@@ -28,12 +28,14 @@ class KelasResource extends Resource
                     ->label('Dosen Pengampu')
                     ->relationship('dosen', 'nama')
                     ->searchable()
+                    ->preload()
                     ->required(),
 
                 Forms\Components\Select::make('matakuliah_id')
                     ->label('Mata Kuliah')
                     ->relationship('matakuliah', 'nama_matkul')
                     ->searchable()
+                    ->preload()
                     ->required(),
 
                 Forms\Components\TextInput::make('nama_kelas')
