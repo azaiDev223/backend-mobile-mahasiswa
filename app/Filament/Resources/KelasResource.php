@@ -37,7 +37,7 @@ class KelasResource extends Resource
                     ->required(),
 
                 Forms\Components\TextInput::make('nama_kelas')
-                    ->label('Nama Ruangan')
+                    ->label('Nama Kelas Pembelajaran')
                     ->required()
                     ->maxLength(100),
             ]);
@@ -49,7 +49,7 @@ class KelasResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('dosen.nama')->label('Dosen'),
                 Tables\Columns\TextColumn::make('matakuliah.nama_matkul')->label('Mata Kuliah'),
-                Tables\Columns\TextColumn::make('nama_kelas')->label('Ruangan'),
+                Tables\Columns\TextColumn::make('nama_kelas')->label('Nama Kelas Pembelajaran'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Dibuat'),
             ])
             ->filters([])

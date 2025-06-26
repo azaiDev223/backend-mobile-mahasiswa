@@ -125,6 +125,9 @@ Route::put('jadwal-kuliah/{id}', [JadwalKuliahController::class, 'update']);
 Route::delete('jadwal-kuliah/{id}', [JadwalKuliahController::class, 'destroy']);
 
 
+Route::middleware('auth:sanctum')->get('/jadwal-dosen', [JadwalKuliahController::class, 'jadwalByDosen']);
+
+
 
 
 
