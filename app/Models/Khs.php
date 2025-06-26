@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Khs extends Model
 {
@@ -23,9 +24,9 @@ class Khs extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
-    public function details()
+    public function details(): HasMany
     {
-        return $this->hasMany(KhsDetail::class, 'khs_id');
+        return $this->hasMany(KhsDetail::class, 'khs_id', 'id');
     }
 }
 
