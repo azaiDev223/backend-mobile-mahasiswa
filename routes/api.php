@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\Mahasiswa\KhsController;
+use App\Http\Controllers\Api\KhsController;
 use App\Http\Controllers\Api\ProfileMahasiswaController;
 use App\Http\Controllers\Api\KrsController;
 
@@ -43,6 +43,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/profile/update', [ProfileMahasiswaController::class, 'updateProfile']);
     // --- RUTE BARU UNTUK FITUR KRS ---
     Route::get('/krs/penawaran', [KrsController::class, 'getPenawaranMatakuliah']);
+    Route::post('/krs/simpan', [KrsController::class, 'simpanKrs']); // <-- RUTE BARU
+    Route::get('/krs/riwayat', [KrsController::class, 'getSubmittedKrs']); // <-- RUTE BARU
+    // --- RUTE BARU UNTUK JADWAL KULIAH ---
+    Route::get('/jadwal-kuliah', [KrsController::class, 'getJadwalKuliah']);
+    Route::get('/khs', [KhsController::class, 'index']);
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
