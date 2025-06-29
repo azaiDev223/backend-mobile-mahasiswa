@@ -17,7 +17,7 @@ class KhsDetail extends Model
 
     public function khs()
     {
-        return $this->belongsTo(Khs::class, 'khs_id');
+        return $this->belongsTo(Khs::class, 'khs_id', 'id_khs');
     }
 
     public function mataKuliah()
@@ -25,4 +25,3 @@ class KhsDetail extends Model
         return $this->belongsTo(MataKuliah::class, 'mata_kuliah_id');
     }
 }
-

@@ -41,10 +41,16 @@ class JadwalKuliahController extends Controller
     }
 
     public function show($id)
-    {
-        $jadwal = JadwalKuliah::with('kelas')->findOrFail($id);
-        return new JadwalKuliahResource($jadwal);
-    }
+        {
+            $jadwal = JadwalKuliah::with('kelas.mataKuliah')->findOrFail($id);
+
+            return response()->json([
+                'id' => $jadwal->id,
+                'mata_kuliah_id' => $jadwal->kelas->mataKuliah->id ?? null,
+            ]);
+        }
+
+
 
     public function update(Request $request, $id)
     {

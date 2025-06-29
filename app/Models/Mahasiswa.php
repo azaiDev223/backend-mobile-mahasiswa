@@ -75,6 +75,11 @@ class Mahasiswa extends Authenticatable
             get: fn () => $this->foto ? asset('storage/' . $this->foto) : null,
         );
     }
+
+    public function khs()
+    {
+        return $this->hasMany(Khs::class, 'mahasiswa_id');
+    }
 }
 
 

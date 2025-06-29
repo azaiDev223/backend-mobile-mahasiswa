@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KhsController;
 use App\Http\Controllers\Api\ProfileMahasiswaController;
+// use App\Http\Controllers\Api\Mahasiswa\BimbinganController;
 use App\Http\Controllers\Api\KrsController;
+use App\Http\Controllers\Api\TranskripController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -17,6 +19,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 use App\Http\Controllers\Api\AuthDosenController;
 use App\Http\Controllers\Api\DosenController;
 use App\Http\Controllers\Api\ProfileDosenController;
+use App\Http\Controllers\Api\InputNilaiController;
 
 Route::post('/login-dosen', [AuthDosenController::class, 'login']);
 
@@ -30,6 +33,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // update password
     Route::post('/dosen/update-password', [ProfileDosenController::class, 'updatePassword']);
+
+
+    // update nilai
+    Route::get('/input-nilai/matkul', [InputNilaiController::class, 'listMatkul']);
+    Route::get('/input-nilai/mahasiswa/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswa']);
+    Route::post('/input-nilai/simpan', [InputNilaiController::class, 'simpanNilai']);
 
 
 
@@ -62,6 +71,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // --- RUTE BARU UNTUK JADWAL KULIAH ---
     Route::get('/jadwal-kuliah', [KrsController::class, 'getJadwalKuliah']);
     Route::get('/khs', [KhsController::class, 'index']);
+    // --- RUTE BARU UNTUK FITUR TRANSKRIP ---
+    Route::get('/transkrip', [TranskripController::class, 'getTranskrip']);
+    // Route spesifik untuk Bimbingan dari sisi Mahasiswa
+    Route::get('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'index']);
+    Route::post('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'store']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
