@@ -172,7 +172,7 @@ class KrsController extends Controller
         }
 
         // 3. Ambil semua detail jadwal dari KRS tersebut
-        $jadwalKuliah = $krsDisetujui->details()->with([
+        $jadwalKuliah = $krsDisetujui->detail()->with([
             'jadwalKuliah.kelas.mataKuliah',
             'jadwalKuliah.kelas.dosen'
         ])->get()->pluck('jadwalKuliah');

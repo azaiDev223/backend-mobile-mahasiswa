@@ -42,7 +42,11 @@ class Dosen extends Authenticatable
     }
 
     public function mahasiswas()
-{
-    return $this->hasMany(Mahasiswa::class, 'dosen_id');
-}
+    {
+        return $this->hasMany(Mahasiswa::class, 'dosen_id');
+    }
+    public function messages()
+    {
+        return $this->morphMany(ChatMessage::class, 'sender');
+    }
 }
