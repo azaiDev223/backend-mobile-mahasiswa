@@ -72,7 +72,7 @@ class Mahasiswa extends Authenticatable
     protected function fotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->foto ? asset('storage/' . $this->foto) : null,
+            get: fn() => $this->foto ? asset('storage/' . $this->foto) : null,
         );
     }
 
@@ -80,6 +80,9 @@ class Mahasiswa extends Authenticatable
     {
         return $this->hasMany(Khs::class, 'mahasiswa_id');
     }
+
+    public function messages()
+    {
+        return $this->morphMany(ChatMessage::class, 'sender');
+    }
 }
-
-
