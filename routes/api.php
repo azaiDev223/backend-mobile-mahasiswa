@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ProfileMahasiswaController;
 // use App\Http\Controllers\Api\Mahasiswa\BimbinganController;
 use App\Http\Controllers\Api\KrsController;
 use App\Http\Controllers\Api\TranskripController;
+use App\Http\Controllers\Api\ChatController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -46,7 +47,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/dosen/me', [DosenController::class, 'me']);
 
-    Route::post('/logout-dosen', [AuthDosenController::class, 'logout']);
+
+    Route::get('/dosen/chat/conversations', [ChatController::class, 'getDosenConversations']);
+    Route::get('/dosen/chat/{mahasiswaId}', [ChatController::class, 'getMessagesWithMahasiswa']);
+    Route::post('/dosen/chat', [ChatController::class, 'sendMessageToMahasiswa']);
+    Route::post('/chat-dosen', [ChatController::class, 'sendMessageFromDosen']);
 });
 
 
@@ -69,13 +74,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/krs/simpan', [KrsController::class, 'simpanKrs']); // <-- RUTE BARU
     Route::get('/krs/riwayat', [KrsController::class, 'getSubmittedKrs']); // <-- RUTE BARU
     // --- RUTE BARU UNTUK JADWAL KULIAH ---
-    Route::get('/jadwal-kuliah', [KrsController::class, 'getJadwalKuliah']);
+    Route::get('/jadwal-kuliah/mahasiswa', [KrsController::class, 'getJadwalKuliah']);
     Route::get('/khs', [KhsController::class, 'index']);
     // --- RUTE BARU UNTUK FITUR TRANSKRIP ---
     Route::get('/transkrip', [TranskripController::class, 'getTranskrip']);
     // Route spesifik untuk Bimbingan dari sisi Mahasiswa
     Route::get('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'index']);
     Route::post('/mahasiswa/bimbingan', [App\Http\Controllers\Api\Mahasiswa\BimbinganController::class, 'store']);
+
+    // Route untuk Chat
+    Route::get('/chat/{partnerId}', [ChatController::class, 'getMessages']);
+    Route::post('/chat', [ChatController::class, 'sendMessage']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });

@@ -132,6 +132,30 @@ class KrsController extends Controller
         return new KrsResource($krs);
     }
 
+    // public function getJadwalKuliah(Request $request)
+    // {
+    //     $mahasiswa = $request->user();
+
+    //     // 1. Cari KRS terakhir yang statusnya "Disetujui"
+    //     $krsDisetujui = Krs::where('id_mahasiswa', $mahasiswa->id)
+    //         ->where('status_krs', 'Disetujui')
+    //         ->latest('created_at') // Ambil yang paling baru
+    //         ->first();
+
+    //     // 2. Jika tidak ada KRS yang disetujui, kembalikan respons kosong
+    //     if (!$krsDisetujui) {
+    //         return response()->json(['data' => []]);
+    //     }
+
+    //     // 3. Ambil semua detail jadwal dari KRS tersebut
+    //     $jadwalKuliah = $krsDisetujui->detail()->with([
+    //         'jadwalKuliah.kelas.mataKuliah',
+    //         'jadwalKuliah.kelas.dosen'
+    //     ])->get()->pluck('jadwalKuliah');
+
+    //     // 4. Kirim data menggunakan Resource untuk format yang konsisten
+    //     return JadwalKuliahResource::collection($jadwalKuliah);
+    // }
     public function getJadwalKuliah(Request $request)
     {
         $mahasiswa = $request->user();

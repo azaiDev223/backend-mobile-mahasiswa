@@ -64,15 +64,15 @@ class Mahasiswa extends Authenticatable
     }
 
     public function krs()
-    {
-        // HAPUS BARIS YANG SALAH DARI SINI
-        return $this->hasMany(Krs::class, 'mahasiswa_id');
-    }
+{
+    return $this->hasMany(Krs::class, 'id_mahasiswa');
+}
+
 
     protected function fotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->foto ? asset('storage/' . $this->foto) : null,
+            get: fn() => $this->foto ? asset('storage/' . $this->foto) : null,
         );
     }
 
@@ -80,6 +80,9 @@ class Mahasiswa extends Authenticatable
     {
         return $this->hasMany(Khs::class, 'mahasiswa_id');
     }
+
+    public function messages()
+    {
+        return $this->morphMany(ChatMessage::class, 'sender');
+    }
 }
-
-

@@ -45,10 +45,4 @@ class Dosen extends Authenticatable
 {
     return $this->hasMany(Mahasiswa::class, 'dosen_id');
 }
-
-public function kelas()
-{
-    return $this->hasMany(Kelas::class);
-}
-
 }
