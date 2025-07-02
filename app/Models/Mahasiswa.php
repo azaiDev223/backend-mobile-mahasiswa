@@ -64,10 +64,10 @@ class Mahasiswa extends Authenticatable
     }
 
     public function krs()
-    {
-        // HAPUS BARIS YANG SALAH DARI SINI
-        return $this->hasMany(Krs::class, 'mahasiswa_id');
-    }
+{
+    return $this->hasMany(Krs::class, 'id_mahasiswa');
+}
+
 
     protected function fotoUrl(): Attribute
     {

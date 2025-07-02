@@ -10,36 +10,43 @@ use App\Models\Mahasiswa;
 
 class ChatController extends Controller
 {
-    // Mengambil riwayat pesan antara user yang login dan user lain
+    // Mengambil riwayat pesan (umum)
     public function getMessages(Request $request, $partnerId)
     {
         $user = Auth::user();
         $userType = get_class($user);
-
-        // Cari partner berdasarkan ID (untuk sekarang kita asumsikan partner adalah Dosen)
-        // Di masa depan, ini bisa dibuat lebih dinamis
-        $partnerType = 'App\\Models\\Dosen';
+        $partnerType = 'App\\Models\\Dosen'; // default
 
         $messages = ChatMessage::where(function ($query) use ($user, $userType, $partnerId, $partnerType) {
-            // Pesan dari saya ke dia
             $query->where('sender_id', $user->id)
-                  ->where('sender_type', $userType)
-                  ->where('receiver_id', $partnerId)
-                  ->where('receiver_type', $partnerType);
+                ->where('sender_type', $userType)
+                ->where('receiver_id', $partnerId)
+                ->where('receiver_type', $partnerType);
         })->orWhere(function ($query) use ($user, $userType, $partnerId, $partnerType) {
-            // Pesan dari dia ke saya
             $query->where('sender_id', $partnerId)
-                  ->where('sender_type', $partnerType)
-                  ->where('receiver_id', $user->id)
-                  ->where('receiver_type', $userType);
+                ->where('sender_type', $partnerType)
+                ->where('receiver_id', $user->id)
+                ->where('receiver_type', $userType);
         })
-        ->orderBy('created_at', 'asc') // Urutkan dari yang terlama
+        ->orderBy('created_at', 'asc')
         ->get();
 
-        return response()->json(['data' => $messages]);
+        return response()->json([
+            'data' => $messages->map(function ($msg) {
+                return [
+                    'id' => $msg->id,
+                    'sender_id' => $msg->sender_id,
+                    'sender_type' => class_basename($msg->sender_type),
+                    'receiver_id' => $msg->receiver_id,
+                    'receiver_type' => class_basename($msg->receiver_type),
+                    'message' => $msg->message,
+                    'created_at' => $msg->created_at->toIso8601String(),
+                ];
+            })
+        ]);
     }
 
-    // Mengirim pesan baru
+    // Mahasiswa mengirim pesan ke dosen
     public function sendMessage(Request $request)
     {
         $request->validate([
@@ -49,55 +56,73 @@ class ChatController extends Controller
 
         $user = Auth::user();
 
-        // Buat pesan baru
         $message = ChatMessage::create([
             'sender_id' => $user->id,
             'sender_type' => get_class($user),
             'receiver_id' => $request->receiver_id,
-            'receiver_type' => 'App\\Models\\Dosen', // Asumsi mahasiswa chat dengan dosen
+            'receiver_type' => 'App\\Models\\Dosen',
             'message' => $request->message,
         ]);
 
-        return response()->json(['data' => $message], 201);
+        return response()->json([
+            'data' => [
+                'id' => $message->id,
+                'sender_id' => $message->sender_id,
+                'sender_type' => class_basename($message->sender_type),
+                'receiver_id' => $message->receiver_id,
+                'receiver_type' => class_basename($message->receiver_type),
+                'message' => $message->message,
+                'created_at' => $message->created_at->toIso8601String(),
+            ]
+        ], 201);
     }
 
+    // Dosen melihat daftar mahasiswa yang pernah bimbingan
     public function getDosenConversations(Request $request)
     {
         $dosen = Auth::user();
         $mahasiswas = Mahasiswa::where('dosen_id', $dosen->id)
-                                ->orderBy('nama', 'asc')
-                                ->get(['id', 'nama', 'nim', 'foto']);
-        
+            ->orderBy('nama', 'asc')
+            ->get(['id', 'nama', 'nim', 'foto']);
+
         return response()->json(['data' => $mahasiswas]);
     }
 
-    /**
-     * DOSEN: Mengambil riwayat pesan dengan seorang mahasiswa tertentu.
-     */
+    // Dosen mengambil riwayat chat dengan mahasiswa
     public function getMessagesWithMahasiswa(Request $request, $mahasiswaId)
     {
         $dosen = Auth::user();
 
         $messages = ChatMessage::where(function ($query) use ($dosen, $mahasiswaId) {
             $query->where('sender_id', $dosen->id)
-                  ->where('sender_type', 'App\\Models\\Dosen')
-                  ->where('receiver_id', $mahasiswaId)
-                  ->where('receiver_type', 'App\\Models\\Mahasiswa');
+                ->where('sender_type', 'App\\Models\\Dosen')
+                ->where('receiver_id', $mahasiswaId)
+                ->where('receiver_type', 'App\\Models\\Mahasiswa');
         })->orWhere(function ($query) use ($dosen, $mahasiswaId) {
             $query->where('sender_id', $mahasiswaId)
-                  ->where('sender_type', 'App\\Models\\Mahasiswa')
-                  ->where('receiver_id', $dosen->id)
-                  ->where('receiver_type', 'App\\Models\\Dosen');
+                ->where('sender_type', 'App\\Models\\Mahasiswa')
+                ->where('receiver_id', $dosen->id)
+                ->where('receiver_type', 'App\\Models\\Dosen');
         })
         ->orderBy('created_at', 'asc')
         ->get();
 
-        return response()->json(['data' => $messages]);
+        return response()->json([
+            'data' => $messages->map(function ($msg) {
+                return [
+                    'id' => $msg->id,
+                    'sender_id' => $msg->sender_id,
+                    'sender_type' => class_basename($msg->sender_type),
+                    'receiver_id' => $msg->receiver_id,
+                    'receiver_type' => class_basename($msg->receiver_type),
+                    'message' => $msg->message,
+                    'created_at' => $msg->created_at->toIso8601String(),
+                ];
+            })
+        ]);
     }
 
-    /**
-     * DOSEN: Mengirim pesan ke seorang mahasiswa.
-     */
+    // Dosen mengirim pesan ke mahasiswa
     public function sendMessageToMahasiswa(Request $request)
     {
         $validated = $request->validate([
@@ -115,6 +140,35 @@ class ChatController extends Controller
             'message' => $validated['message'],
         ]);
 
-        return response()->json(['data' => $message], 201);
+        return response()->json([
+            'data' => [
+                'id' => $message->id,
+                'sender_id' => $message->sender_id,
+                'sender_type' => class_basename($message->sender_type),
+                'receiver_id' => $message->receiver_id,
+                'receiver_type' => class_basename($message->receiver_type),
+                'message' => $message->message,
+                'created_at' => $message->created_at->toIso8601String(),
+            ]
+        ], 201);
+    }
+
+    // Hapus pesan (oleh pengirimnya saja)
+    public function destroy($id)
+    {
+        $user = Auth::user();
+        $message = ChatMessage::findOrFail($id);
+
+        // Perbaikan: bandingkan class basename saja
+        if (
+            $message->sender_id !== $user->id ||
+            class_basename(get_class($user)) !== class_basename($message->sender_type)
+        ) {
+            return response()->json(['error' => 'Tidak diizinkan menghapus pesan ini.'], 403);
+        }
+
+        $message->delete();
+
+        return response()->json(['message' => 'Pesan berhasil dihapus.']);
     }
 }

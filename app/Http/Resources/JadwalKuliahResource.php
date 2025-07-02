@@ -13,43 +13,39 @@ class JadwalKuliahResource extends JsonResource
      * @return array<string, mixed>
      */
     public function toArray(Request $request): array
-    {
-        // 'whenLoaded' memastikan data relasi hanya disertakan jika sudah di-load
-        // oleh controller (menggunakan ->with([...])) untuk efisiensi.
-        return [
-            'id' => $this->id,
-            'hari' => $this->hari,
-            'jam_mulai' => $this->jam_mulai,
-            'jam_selesai' => $this->jam_selesai,
-            'ruangan' => $this->ruangan,
-            'tahun_akademik' => $this->tahun_akademik, // <-- Ditambahkan
-            'kuota' => $this->kuota,                // <-- Ditambahkan
-            
-            // --- BAGIAN YANG DIPERBAIKI ---
-            // Membangun data kelas dan relasinya secara manual
-            'kelas' => [
-                'id' => $this->kelas->id,
-                'nama_kelas' => $this->kelas->nama_kelas,
+{
+    return [
+        'id' => $this->id,
+        'hari' => $this->hari,
+        'jam_mulai' => $this->jam_mulai,
+        'jam_selesai' => $this->jam_selesai,
+        'ruangan' => $this->ruangan,
+        'tahun_akademik' => $this->tahun_akademik,
+        'kuota' => $this->kuota,
 
-                // Menyertakan data mata kuliah dari relasi kelas
-                'mata_kuliah' => [
-                    'id' => $this->kelas->mataKuliah->id,
-                    'kode_matkul' => $this->kelas->mataKuliah->kode_matkul, // Kirim sebagai 'kode' agar cocok dengan Flutter
-                    'nama_matkul' => $this->kelas->mataKuliah->nama_matkul,
-                    'sks' => $this->kelas->mataKuliah->sks,
-                    'semester' => $this->kelas->mataKuliah->semester,
-                    'program_studi_id' => $this->kelas->mataKuliah->program_studi_id,
-                ],
+        // Tambahkan field ini agar bisa langsung diakses dari Flutter
+        'mata_kuliah_id' => $this->kelas->mataKuliah->id ?? null,
 
-                // Menyertakan data dosen dari relasi kelas
-                'dosen' => [
-                    'id' => $this->kelas->dosen->id,
-                    'nama' => $this->kelas->dosen->nama,
-                    // Anda bisa menambahkan field dosen lain jika perlu
-                    'nip' => $this->kelas->dosen->nip,
-                    'email' => $this->kelas->dosen->email,
-                ],
+        'kelas' => [
+            'id' => $this->kelas->id,
+            'nama_kelas' => $this->kelas->nama_kelas,
+
+            'mata_kuliah' => [
+                'id' => $this->kelas->mataKuliah->id,
+                'kode_matkul' => $this->kelas->mataKuliah->kode_matkul,
+                'nama_matkul' => $this->kelas->mataKuliah->nama_matkul,
+                'sks' => $this->kelas->mataKuliah->sks,
+                'semester' => $this->kelas->mataKuliah->semester,
+                'program_studi_id' => $this->kelas->mataKuliah->program_studi_id,
             ],
-        ];
-    }
+
+            'dosen' => [
+                'id' => $this->kelas->dosen->id,
+                'nama' => $this->kelas->dosen->nama,
+                'nip' => $this->kelas->dosen->nip,
+                'email' => $this->kelas->dosen->email,
+            ],
+        ],
+    ];
+}
 }

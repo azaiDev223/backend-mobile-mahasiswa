@@ -43,10 +43,16 @@ class JadwalKuliahController extends Controller
     }
 
     public function show($id)
-    {
-        $jadwal = JadwalKuliah::with('kelas')->findOrFail($id);
-        return new JadwalKuliahResource($jadwal);
-    }
+        {
+            $jadwal = JadwalKuliah::with('kelas.mataKuliah')->findOrFail($id);
+
+            return response()->json([
+                'id' => $jadwal->id,
+                'mata_kuliah_id' => $jadwal->kelas->mataKuliah->id ?? null,
+            ]);
+        }
+
+
 
     public function update(Request $request, $id)
     {
@@ -85,4 +91,23 @@ class JadwalKuliahController extends Controller
             'message' => 'Jadwal berhasil dihapus',
         ]);
     }
+
+
+
+    // jadwal untuk dosen
+    public function jadwalByDosen(Request $request)
+    {
+        $dosen = $request->user(); // dosen yang login
+
+        $jadwal = JadwalKuliah::whereHas('kelas', function ($query) use ($dosen) {
+            $query->where('dosen_id', $dosen->id);
+        })->with([
+            'kelas:id,dosen_id,matakuliah_id,nama_kelas',
+            'kelas.mataKuliah:id,nama_matkul,kode_matkul',
+        ])->get();
+
+        return response()->json($jadwal);
+    }
 }
+
+

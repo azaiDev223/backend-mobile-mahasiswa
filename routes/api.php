@@ -19,10 +19,35 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // login dosen
 use App\Http\Controllers\Api\AuthDosenController;
 use App\Http\Controllers\Api\DosenController;
+use App\Http\Controllers\Api\ProfileDosenController;
+use App\Http\Controllers\Api\InputNilaiController;
 
 Route::post('/login-dosen', [AuthDosenController::class, 'login']);
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
+    
+    Route::post('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
+    Route::put('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
+
+
+    // update password
+    Route::post('/dosen/update-password', [ProfileDosenController::class, 'updatePassword']);
+
+
+    // update nilai
+    Route::get('/input-nilai/matkul', [InputNilaiController::class, 'listMatkul']);
+    Route::get('/input-nilai/mahasiswa/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswa']);
+    Route::post('/input-nilai/simpan', [InputNilaiController::class, 'simpanNilai']);
+    Route::get('/nilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaDenganNilai']);
+   Route::get('/input-nilai/sudah-dinilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaSudahDinilai']);
+
+
+
+
+
+
 
 Route::get('/dosen/me', [DosenController::class, 'me']);
 
@@ -31,6 +56,12 @@ Route::get('/dosen/me', [DosenController::class, 'me']);
     Route::get('/dosen/chat/{mahasiswaId}', [ChatController::class, 'getMessagesWithMahasiswa']);
     Route::post('/dosen/chat', [ChatController::class, 'sendMessageToMahasiswa']);
     Route::post('/chat-dosen', [ChatController::class, 'sendMessageFromDosen']);
+    Route::middleware('auth:sanctum')->delete('/chat/{id}', [ChatController::class, 'destroy']);
+
+
+    // Route::delete('/chat/{id}', [ChatController::class, 'deleteMessage']);
+    // Route::middleware('auth:sanctum')->delete('/chat/{id}', [ChatController::class, 'destroy']);
+
 });
 
 
@@ -114,6 +145,13 @@ Route::put('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'upda
 Route::patch('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'update']);
 Route::delete('dosen/{id}', [App\Http\Controllers\Api\DosenController::class, 'destroy']);
 
+
+
+
+
+
+
+
 // routes/api.php
 
 Route::get('mahasiswa', [App\Http\Controllers\Api\MahasiswaController::class, 'index']);
@@ -143,6 +181,9 @@ Route::put('jadwal-kuliah/{id}', [JadwalKuliahController::class, 'update']);
 Route::delete('jadwal-kuliah/{id}', [JadwalKuliahController::class, 'destroy']);
 
 
+Route::middleware('auth:sanctum')->get('/jadwal-dosen', [JadwalKuliahController::class, 'jadwalByDosen']);
+
+
 
 
 
@@ -154,6 +195,13 @@ Route::post('bimbingan', [BimbinganController::class, 'store']);
 Route::get('bimbingan/{id}', [BimbinganController::class, 'show']);
 Route::put('bimbingan/{id}', [BimbinganController::class, 'update']);
 Route::delete('bimbingan/{id}', [BimbinganController::class, 'destroy']);
+
+Route::middleware('auth:sanctum')->get('/bimbingan-admin', [BimbinganController::class, 'bimbinganAdmin']);
+Route::middleware('auth:sanctum')->get('/bimbingan-dosen', [BimbinganController::class, 'bimbinganDosen']);
+
+
+
+
 
 
 

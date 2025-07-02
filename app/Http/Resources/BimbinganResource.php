@@ -14,6 +14,8 @@ class BimbinganResource extends JsonResource
             'mahasiswa' => [
                 'id' => $this->mahasiswa_id,
                 'nama' => $this->mahasiswa->nama ?? null,
+                'nim' => $this->mahasiswa->nim ?? null,
+                'angkatan' => $this->mahasiswa->angkatan ?? null,
             ],
             'dosen' => [
                 'id' => $this->dosen_id,
