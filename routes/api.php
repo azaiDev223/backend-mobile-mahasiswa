@@ -40,6 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/input-nilai/matkul', [InputNilaiController::class, 'listMatkul']);
     Route::get('/input-nilai/mahasiswa/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswa']);
     Route::post('/input-nilai/simpan', [InputNilaiController::class, 'simpanNilai']);
+    Route::get('/nilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaDenganNilai']);
+   Route::get('/input-nilai/sudah-dinilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaSudahDinilai']);
+
+
 
 
 
@@ -52,6 +56,12 @@ Route::get('/dosen/me', [DosenController::class, 'me']);
     Route::get('/dosen/chat/{mahasiswaId}', [ChatController::class, 'getMessagesWithMahasiswa']);
     Route::post('/dosen/chat', [ChatController::class, 'sendMessageToMahasiswa']);
     Route::post('/chat-dosen', [ChatController::class, 'sendMessageFromDosen']);
+    Route::middleware('auth:sanctum')->delete('/chat/{id}', [ChatController::class, 'destroy']);
+
+
+    // Route::delete('/chat/{id}', [ChatController::class, 'deleteMessage']);
+    // Route::middleware('auth:sanctum')->delete('/chat/{id}', [ChatController::class, 'destroy']);
+
 });
 
 

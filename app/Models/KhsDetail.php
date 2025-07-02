@@ -17,7 +17,7 @@ class KhsDetail extends Model
 
     public function khs()
     {
-        return $this->belongsTo(Khs::class, 'khs_id', 'id_khs');
+        return $this->belongsTo(Khs::class, 'khs_id'); // FIXED
     }
 
     public function mataKuliah()
