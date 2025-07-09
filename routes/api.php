@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\ProfileMahasiswaController;
 use App\Http\Controllers\Api\KrsController;
 use App\Http\Controllers\Api\TranskripController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\LandingPageController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -99,8 +100,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-
-
+// Route untuk Landing Page
+Route::get('/landing-page', [LandingPageController::class, 'getData']);
+Route::post('/testimonials', [LandingPageController::class, 'storeTestimonial']);
+Route::post('/contact', [LandingPageController::class, 'storeMessage']);
 
 // Api untuk pengumuman
 
