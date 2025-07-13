@@ -33,13 +33,13 @@ class InputNilaiController extends Controller
     public function listMahasiswa($jadwal_kuliah_id)
     {
         $jadwal = JadwalKuliah::with('kelas.mataKuliah')->findOrFail($jadwal_kuliah_id);
-        $mataKuliahId = $jadwal->kelas->mata_kuliah_id;
+        $mataKuliahId = $jadwal->kelas->matakuliah_id;
 
         $mahasiswas = Mahasiswa::whereHas('krs.detail', function ($q) use ($jadwal_kuliah_id) {
                 $q->where('jadwal_kuliah_id', $jadwal_kuliah_id);
             })
             ->whereDoesntHave('khs.details', function ($q) use ($mataKuliahId) {
-                $q->where('mata_kuliah_id', $mataKuliahId);
+                $q->where('matakuliah_id', $mataKuliahId);
             })
             ->with(['krs' => function ($q) use ($jadwal_kuliah_id) {
                 $q->whereHas('detail', fn($d) => $d->where('jadwal_kuliah_id', $jadwal_kuliah_id));

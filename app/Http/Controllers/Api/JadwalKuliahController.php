@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\JadwalKuliahResource;
 use App\Models\JadwalKuliah;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -107,6 +108,31 @@ class JadwalKuliahController extends Controller
         ])->get();
 
         return response()->json($jadwal);
+    }
+
+
+    public function daftarmahasiswa($jadwalkuliah){
+        $jadwal = JadwalKuliah::with('kelas.matakuliah')->findOrFail($jadwalkuliah);
+        $matakuliahId = $jadwal->kelas->matakuliah_id;
+
+        $mahasiswas = Mahasiswa::whereHas('krs.detail', function ($q) use ($jadwalkuliah) {
+                $q->where('jadwal_kuliah_id', $jadwalkuliah);
+            })
+            ->with(['krs' => function ($q) use ($jadwalkuliah) {
+                $q->whereHas('detail', fn($d) => $d->where('jadwal_kuliah_id', $jadwalkuliah));
+            }])
+            ->get();
+
+        $result = $mahasiswas->map(function ($mhs) {
+            $krs = $mhs->krs->first();
+            return [
+                'id' => $mhs->id,
+                'nama' => $mhs->nama,
+                'semester' => $krs->semester ?? null,
+                'tahun_akademik' => $krs->tahun_akademik ?? null,
+            ];
+        });
+        return response()->json($result);
     }
 }
 

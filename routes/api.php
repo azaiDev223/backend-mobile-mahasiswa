@@ -65,6 +65,8 @@ Route::get('/dosen/me', [DosenController::class, 'me']);
 
 });
 
+Route::get('/daftar-mahasiswa/{jadwal_kuliah_id}', [App\Http\Controllers\Api\JadwalKuliahController::class, 'daftarmahasiswa']);
+
 
 
 // Login Mahasiswa (Sanctum)
