@@ -17,6 +17,11 @@ class KhsResource extends Resource
 {
     protected static ?string $model = Khs::class;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?string $pluralLabel = 'KHS Mahasiswa';
+    protected static ?string $label = 'KHS';
+    protected static ?int $navigationSort = 4;
+
 
     public static function form(Form $form): Form
     {

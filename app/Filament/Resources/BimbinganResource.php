@@ -15,8 +15,7 @@ class BimbinganResource extends Resource
     protected static ?string $model = Bimbingan::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
-
-    protected static ?string $navigationLabel = 'Bimbingan';
+    protected static ?string $navigationGroup = 'Akademik';
     protected static ?string $modelLabel = 'Bimbingan';
     protected static ?string $pluralModelLabel = 'Bimbingan';
 

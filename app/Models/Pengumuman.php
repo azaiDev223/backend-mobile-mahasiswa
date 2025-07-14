@@ -14,5 +14,6 @@ class Pengumuman extends Model
         'judul',
         'kategori',
         'isi',
+        'foto', // Menambahkan kolom foto ke dalam fillable
     ];
 }

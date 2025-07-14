@@ -6,6 +6,7 @@ use App\Filament\Resources\PengumumanResource\Pages;
 use App\Filament\Resources\PengumumanResource\RelationManagers;
 use App\Models\Pengumuman;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -38,6 +39,15 @@ class PengumumanResource extends Resource
                     ->required()
                     ->label('isi')
                     ->maxLength(255),
+                FileUpload::make('foto')
+                    ->label('Foto')
+                    ->image()
+                    ->disk('public') // Pastikan disk ini sesuai dengan konfigurasi filesystem Anda
+                    ->directory('pengumuman_fotos') // Direktori penyimpanan foto
+                    ->visibility('public') // Foto akan dapat diakses publik
+                    ->nullable() // Foto tidak wajib diisi
+                    ->maxSize(1024) // Maksimal ukuran file 1MB
+                    ->acceptedFileTypes(['image/*']), 
             ]);
     }
 

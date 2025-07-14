@@ -19,6 +19,8 @@ class PengumumanResource extends JsonResource
             'judul' => $this->judul,
             'kategori' => $this->kategori,
             'isi' => $this->isi,
+            'foto' => $this->foto, // Menambahkan foto jika ada
+            'foto_url' => $this->foto ? asset('storage/' . $this->foto) : null, // URL lengkap untuk foto
             'created_at' => $this->created_at->toDateTimeString(),
             'updated_at' => $this->created_at->toDateTimeString(),
         ];
