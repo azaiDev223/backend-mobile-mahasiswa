@@ -35,7 +35,7 @@ class BimbinganController extends Controller
             'tanggal_bimbingan' => 'required|date',
             'topik' => 'required|string|max:255',
             'catatan' => 'nullable|string',
-            'status' => 'required|in:Terjadwal,Selesai,Dibatalkan',
+            'status' => 'required|in:Terjadwal,Selesai,Dibatalkan,Ditolak',
         ]);
 
         if ($validator->fails()) {
@@ -63,7 +63,7 @@ class BimbinganController extends Controller
             'tanggal_bimbingan' => 'sometimes|date',
             'topik' => 'sometimes|string|max:255',
             'catatan' => 'nullable|string',
-            'status' => 'sometimes|in:Terjadwal,Selesai,Dibatalkan',
+            'status' => 'sometimes|in:Terjadwal,Selesai,Dibatalkan,Ditolak',
         ]);
 
         if ($validator->fails()) {

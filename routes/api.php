@@ -42,7 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/input-nilai/mahasiswa/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswa']);
     Route::post('/input-nilai/simpan', [InputNilaiController::class, 'simpanNilai']);
     Route::get('/nilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaDenganNilai']);
-   Route::get('/input-nilai/sudah-dinilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaSudahDinilai']);
+    Route::get('/input-nilai/sudah-dinilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaSudahDinilai']);
 
 
 
@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-Route::get('/dosen/me', [DosenController::class, 'me']);
+    Route::get('/dosen/me', [DosenController::class, 'me']);
 
 
     Route::get('/dosen/chat/conversations', [ChatController::class, 'getDosenConversations']);

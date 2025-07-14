@@ -39,7 +39,7 @@ class InputNilaiController extends Controller
                 $q->where('jadwal_kuliah_id', $jadwal_kuliah_id);
             })
             ->whereDoesntHave('khs.details', function ($q) use ($mataKuliahId) {
-                $q->where('matakuliah_id', $mataKuliahId);
+                $q->where('mata_kuliah_id', $mataKuliahId);
             })
             ->with(['krs' => function ($q) use ($jadwal_kuliah_id) {
                 $q->whereHas('detail', fn($d) => $d->where('jadwal_kuliah_id', $jadwal_kuliah_id));
