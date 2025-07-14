@@ -50,7 +50,7 @@ class KrsController extends Controller
         $selisihTahun = $tahunSekarang - $tahunMasuk;
         $bulanSekarang = Carbon::now()->month;
         $currentIsGanjil = ($bulanSekarang >= 8 || $bulanSekarang <= 1);
-        $semesterMahasiswa = ($selisihTahun * 2) + ($currentIsGanjil ? 1 : 2);
+        $semesterMahasiswa = ($selisihTahun) + ($currentIsGanjil ? 1 : 2);
 
         return response()->json([
             'tahun_akademik_aktif' => $tahunAkademikAktif,
@@ -79,7 +79,28 @@ class KrsController extends Controller
         $selisihTahun = $tahunSekarang - $tahunMasuk;
         $bulanSekarang = Carbon::now()->month;
         $isGanjil = ($bulanSekarang >= 8 || $bulanSekarang <= 1);
-        $semesterMahasiswa = ($selisihTahun * 2) + ($isGanjil ? 1 : 2);
+        $semesterMahasiswa = ($selisihTahun) + ($isGanjil ? 1 : 2);
+
+        // cek ipk sebelumnya
+        // $ipkSebelumnya = $mahasiswa->khs()->latest()->first()->ipk ?? 0;
+
+        // if ($ipkSebelumnya < 2.0) {
+        //     return response()->json(['message' => 'IPK Anda kurang dari 2.0, tidak dapat mengajukan KRS.'], 403);
+        // }
+
+        // cek total SKS
+        $maksimalSks = 2; // Misalnya, maksimal SKS per semester adalah 24
+        $totalSks = 0;
+        foreach ($validated['jadwal_ids'] as $jadwalId) {
+            $jadwal = JadwalKuliah::find($jadwalId);
+            if ($jadwal) {
+                $totalSks += $jadwal->kelas->mataKuliah->sks; // Asumsi ada relasi ke mata kuliah
+            }
+        }
+        if ($totalSks > $maksimalSks) {
+            return response()->json(['message' => 'Total SKS yang diajukan melebihi batas maksimal.'], 403);
+        }
+
 
         DB::beginTransaction();
         try {
