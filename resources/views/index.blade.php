@@ -171,32 +171,43 @@
     <section id="stats" class="py-5">
         <div class="container">
             <h2 class="section-title">Statistik</h2>
-            <div class="row g-4 text-center">
-                <a href="{{route('statistik.mahasiswa')}}" class="text-decoration-none text-dark">
+            <div class="row g-4 text-center gap-3">
+                <a href="{{route('statistik.mahasiswa')}}" class="text-decoration-none text-dark col-md-3 card h-100 shadow-sm stat-item p-3 ">
                 <div class="col-md-4">
-                    <div class="card h-100 shadow-sm stat-item p-4">
+                    <div class="">
                         <i class="fas fa-users text-success mb-3"></i>
                         <h3>{{ $stats['mahasiswa'] }}+</h3>
                         <p class="text-muted">Mahasiswa Aktif</p>
                     </div>
                 </div>
                 </a>
-                <a href="{{route('statistik.dosen')}}" class="text-decoration-none text-dark">
+                <a href="{{route('statistik.dosen')}}" class="text-decoration-none text-dark col-md-3 card h-100 shadow-sm stat-item p-3">
                 <div class="col-md-4">
-                    <div class="card h-100 shadow-sm stat-item p-4">
+                    <div class="">
                         <i class="fas fa-user-tie text-success mb-3"></i>
                         <h3>{{ $stats['dosen'] }}+</h3>
                         <p class="text-muted">Dosen Pengajar</p>
                     </div>
                 </div>
                 </a>
+                <a href="{{route('statistik.prodi')}}" class="text-decoration-none text-dark col-md-3 card h-100 shadow-sm stat-item p-3">
                 <div class="col-md-4">
-                    <div class="card h-100 shadow-sm stat-item p-4">
+                    <div class="">
                         <i class="fas fa-graduation-cap text-success mb-3"></i>
-                        <h3>{{ $stats['prodi'] }}+</h3>
+                        <h3>{{ $pengumuman }}+</h3>
                         <p class="text-muted">Program Studi</p>
                     </div>
                 </div>
+                </a>
+                <a href="{{route('statistik.pengumuman')}}" class="text-decoration-none text-dark col-md-3 card h-100 shadow-sm stat-item p-3">
+                <div class="col-md-4">
+                    <div class="">
+                        <i class="fas fa-graduation-cap text-success mb-3"></i>
+                        <h3>{{ $stats['prodi'] }}+</h3>
+                        <p class="text-muted">Pengumuman</p>
+                    </div>
+                </div>
+                </a>
             </div>
         </div>
     </section>

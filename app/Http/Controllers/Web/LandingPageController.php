@@ -7,6 +7,7 @@ use App\Models\Dosen;
 use App\Models\Feature;
 use App\Models\Mahasiswa;
 use App\Models\Message;
+use App\Models\Pengumuman;
 use App\Models\ProgramStudi;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
@@ -27,9 +28,10 @@ class LandingPageController extends Controller
             'prodi' => ProgramStudi::count(),
         ];
         $features = Feature::all();
+        $pengumuman = Pengumuman::count();
         $testimonials = Testimonial::where('is_approved', true)->latest()->get();
 
-        return view('index', compact('stats', 'features', 'testimonials'));
+        return view('index', compact('stats', 'features', 'testimonials','pengumuman'));
     }
 
     /**

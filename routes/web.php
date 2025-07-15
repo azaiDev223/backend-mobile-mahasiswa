@@ -16,5 +16,6 @@ Route::post('/contact', [LandingPageController::class, 'storeMessage'])->name('l
 Route::get('/statistik/mahasiswa', [StatistikController::class, 'mahasiswa'])->name('statistik.mahasiswa');
 Route::get('/statistik/dosen', [StatistikController::class, 'dosen'])->name('statistik.dosen');
 Route::get('/statistik/prodi', [StatistikController::class, 'prodi'])->name('statistik.prodi');
+Route::get('/statistik/pengumuman', [StatistikController::class, 'pengumuman'])->name('statistik.pengumuman');
 
 require __DIR__.'/auth.php';

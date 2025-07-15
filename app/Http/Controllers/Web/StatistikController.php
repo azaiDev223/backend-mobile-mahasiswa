@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
+use App\Models\Pengumuman;
 use App\Models\ProgramStudi;
 
 class StatistikController extends Controller
@@ -23,8 +24,16 @@ class StatistikController extends Controller
 
     public function prodi()
     {
-        $prodi = ProgramStudi::withCount(['mahasiswa', 'dosen'])->get();
-        return view('statistik.prodi', compact('prodi'));
+        $prodi = ProgramStudi::with(['mataKuliahs' => function($query) {
+        $query->orderBy('semester');
+    }])->get();
+        return view('prodi', compact('prodi'));
+    }
+
+    public function pengumuman()
+    {
+        $pengumuman = Pengumuman::all();
+        return view('pengumuman',compact('pengumuman'));
     }
 }
 

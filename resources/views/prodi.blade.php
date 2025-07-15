@@ -144,7 +144,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#home">Daftar Dosen</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#home">Daftar Program Studi</a></li>
                         <li class="nav-item"><a class="nav-link" href="/">Kembali</a></li>
                         {{-- <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
                         <li class="nav-item"><a class="nav-link" href="#testimonials">Testimoni</a></li>
@@ -177,20 +177,35 @@
 
     <section id="testimonials" class="py-5">
         <div class="container">
-            <h2 class="section-title">Daftar Dosen</h2>
+            <h2 class="section-title">Daftar Program Studi Dan Mata Kuliah</h2>
             <div class="row g-4">
-                @forelse ($dosen as $dsn)
+                @forelse ($prodi as $item)
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm testimonial-item">
                             <i class="fas fa-quote-left quote-icon"></i>
                             <div class="card-body d-flex flex-column">
                                 {{-- <p class="content flex-grow-1">"{{ $testimo->content }}"</p> --}}
                                 <div class="testimonial-author mt-auto">
-                                    <img src="https://i.pravatar.cc/100?u={{ $dsn->id }}" alt="Avatar">
                                     <div>
-                                        <div class="name">{{ $dsn->nama }}</div>
-                                        <div class="role">{{ $dsn->alamat }}</div>
-                                        <div class="prodi">{{ $dsn->ProgramStudi->nama_prodi }}</div>
+                                        <div class="name">{{ $item->nama_prodi }}</div>
+                                        <div class="prodi">
+                                        @php
+                                            // Kelompokkan mata kuliah berdasarkan semester
+                                            $matkulsPerSemester = $item->mataKuliahs->groupBy('semester');
+                                        @endphp
+
+                                        @foreach ($matkulsPerSemester as $semester => $matkuls)
+                                            <h5 class="mt-3">Semester {{ $semester }}</h5>
+                                            <ul class="list-group">
+                                                @foreach ($matkuls as $matkul)
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{ $matkul->nama_matkul }}
+                                                        <span class="badge bg-secondary">{{ $matkul->sks }} SKS</span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             </div>

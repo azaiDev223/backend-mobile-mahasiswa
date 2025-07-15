@@ -1,3 +1,7 @@
+@php 
+use Illuminate\Support\Str; 
+                                @endphp
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -144,7 +148,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#home">Daftar Dosen</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#home">Daftar Pengumuman</a></li>
                         <li class="nav-item"><a class="nav-link" href="/">Kembali</a></li>
                         {{-- <li class="nav-item"><a class="nav-link" href="#features">Fitur</a></li>
                         <li class="nav-item"><a class="nav-link" href="#testimonials">Testimoni</a></li>
@@ -177,20 +181,22 @@
 
     <section id="testimonials" class="py-5">
         <div class="container">
-            <h2 class="section-title">Daftar Dosen</h2>
+            <h2 class="section-title">Daftar Pengumuman</h2>
             <div class="row g-4">
-                @forelse ($dosen as $dsn)
+                @forelse ($pengumuman as $pmn)
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm testimonial-item">
                             <i class="fas fa-quote-left quote-icon"></i>
                             <div class="card-body d-flex flex-column">
+                                
+                                <p class="content flex-grow-1">"{{ Str::words($pmn->isi, 50, '...') }}"</p>
                                 {{-- <p class="content flex-grow-1">"{{ $testimo->content }}"</p> --}}
                                 <div class="testimonial-author mt-auto">
-                                    <img src="https://i.pravatar.cc/100?u={{ $dsn->id }}" alt="Avatar">
+                                    {{-- <img src="https://i.pravatar.cc/100?u={{ $mhs->id }}" alt="Avatar"> --}}
                                     <div>
-                                        <div class="name">{{ $dsn->nama }}</div>
-                                        <div class="role">{{ $dsn->alamat }}</div>
-                                        <div class="prodi">{{ $dsn->ProgramStudi->nama_prodi }}</div>
+                                        <div class="name">{{ $pmn->judul }}</div>
+                                        <div class="role">{{ $pmn->kategori }}</div>
+                                        {{-- <div class="prodi">{{ $mhs->ProgramStudi->nama_prodi }}</div> --}}
                                     </div>
                                 </div>
                             </div>
