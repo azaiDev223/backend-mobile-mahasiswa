@@ -22,13 +22,16 @@ use App\Http\Controllers\Api\AuthDosenController;
 use App\Http\Controllers\Api\DosenController;
 use App\Http\Controllers\Api\ProfileDosenController;
 use App\Http\Controllers\Api\InputNilaiController;
+use App\Http\Controllers\Api\BimbinganDosenController;
+use App\Http\Controllers\Api\KrsDosenController;
+
 
 Route::post('/login-dosen', [AuthDosenController::class, 'login']);
 
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     Route::post('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
     Route::put('/dosen/profile/update', [ProfileDosenController::class, 'updateProfile']);
 
@@ -43,6 +46,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/input-nilai/simpan', [InputNilaiController::class, 'simpanNilai']);
     Route::get('/nilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaDenganNilai']);
     Route::get('/input-nilai/sudah-dinilai/{jadwal_kuliah_id}', [InputNilaiController::class, 'listMahasiswaSudahDinilai']);
+    // Rute untuk mendapatkan daftar bimbingan
+    Route::get('/bimbingan-dosen', [BimbinganDosenController::class, 'index']);
+
+    // Rute untuk mengubah status bimbingan
+    Route::post('/bimbingan-dosen/{id}/update-status', [BimbinganDosenController::class, 'updateStatus']);
+    Route::put('/bimbingan/{id}', [BimbinganDosenController::class, 'updateStatus']);
+
+    // Rute untuk mendapatkan daftar pengajuan KRS
+    Route::get('/dosen/krs-pengajuan', [KrsDosenController::class, 'getPengajuanKrs']);
+
+    // Rute untuk mengubah status KRS
+    Route::post('/dosen/krs/{krsId}/update-status', [KrsDosenController::class, 'updateKrsStatus']);
 
 
 
@@ -53,11 +68,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dosen/me', [DosenController::class, 'me']);
 
 
+
     Route::get('/dosen/chat/conversations', [ChatController::class, 'getDosenConversations']);
     Route::get('/dosen/chat/{mahasiswaId}', [ChatController::class, 'getMessagesWithMahasiswa']);
     Route::post('/dosen/chat', [ChatController::class, 'sendMessageToMahasiswa']);
     Route::post('/chat-dosen', [ChatController::class, 'sendMessageFromDosen']);
     Route::middleware('auth:sanctum')->delete('/chat/{id}', [ChatController::class, 'destroy']);
+
+
 
 
     // Route::delete('/chat/{id}', [ChatController::class, 'deleteMessage']);
@@ -120,7 +138,7 @@ Route::delete('pengumuman/{id}', [App\Http\Controllers\Api\PengumumanController:
 
 
 // users
-Route::get('users',[App\Http\Controllers\Api\UsersController::class,'index']);
+Route::get('users', [App\Http\Controllers\Api\UsersController::class, 'index']);
 Route::post('users', [App\Http\Controllers\Api\UsersController::class, 'store']);
 Route::put('users/{id}', [App\Http\Controllers\Api\UsersController::class, 'update']);
 Route::patch('users/{id}', [App\Http\Controllers\Api\UsersController::class, 'update']);
@@ -128,7 +146,7 @@ Route::delete('users/{id}', [App\Http\Controllers\Api\UsersController::class, 'd
 
 
 // prodi
-Route::get('prodi',[App\Http\Controllers\Api\ProgramStudiController::class,'index']);
+Route::get('prodi', [App\Http\Controllers\Api\ProgramStudiController::class, 'index']);
 Route::post('prodi', [App\Http\Controllers\Api\ProgramStudiController::class, 'store']);
 Route::put('prodi/{id}', [App\Http\Controllers\Api\ProgramStudiController::class, 'update']);
 Route::patch('prodi/{id}', [App\Http\Controllers\Api\ProgramStudiController::class, 'update']);
@@ -194,6 +212,7 @@ Route::middleware('auth:sanctum')->get('/jadwal-dosen', [JadwalKuliahController:
 
 // bimbingan
 use App\Http\Controllers\Api\BimbinganController;
+// use App\Http\Controllers\Api\BimbinganDosenController;
 
 Route::get('bimbingan', [BimbinganController::class, 'index']);
 Route::post('bimbingan', [BimbinganController::class, 'store']);
@@ -202,14 +221,4 @@ Route::put('bimbingan/{id}', [BimbinganController::class, 'update']);
 Route::delete('bimbingan/{id}', [BimbinganController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/bimbingan-admin', [BimbinganController::class, 'bimbinganAdmin']);
-Route::middleware('auth:sanctum')->get('/bimbingan-dosen', [BimbinganController::class, 'bimbinganDosen']);
-
-
-
-
-
-
-
-
-
-
+// Route::middleware('auth:sanctum')->get('/bimbingan-dosen', [BimbinganController::class, 'bimbinganDosen']);

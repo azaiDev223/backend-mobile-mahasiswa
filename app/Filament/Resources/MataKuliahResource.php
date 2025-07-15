@@ -20,7 +20,12 @@ class MataKuliahResource extends Resource
 {
     protected static ?string $model = MataKuliah::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationGroup = 'Akademik';
+    protected static ?string $pluralLabel = 'Mata Kuliah';
+    // protected static ?string $label = 'KHS';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {

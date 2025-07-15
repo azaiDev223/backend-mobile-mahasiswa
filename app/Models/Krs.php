@@ -29,5 +29,5 @@ class Krs extends Model
     {
         return $this->hasMany(KrsDetail::class, 'krs_id');
     }
-}
+}   
 
