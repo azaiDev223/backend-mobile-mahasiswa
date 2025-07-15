@@ -89,7 +89,7 @@ class KrsController extends Controller
         // }
 
         // cek total SKS
-        $maksimalSks = 2; // Misalnya, maksimal SKS per semester adalah 24
+        $maksimalSks = 24; // Misalnya, maksimal SKS per semester adalah 24
         $totalSks = 0;
         foreach ($validated['jadwal_ids'] as $jadwalId) {
             $jadwal = JadwalKuliah::find($jadwalId);
